@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { polyfill } from 'react-lifecycles-compat';
 
 // eslint-disable-next-line import/no-unresolved
 import { ScreenContainer } from 'react-native-screens';
@@ -42,18 +43,6 @@ class TabNavigationView extends React.PureComponent<Props, State> {
     loaded: [this.props.navigation.state.index],
   };
 
-  _getButtonComponent = ({ route }) => {
-    const { descriptors } = this.props;
-    const descriptor = descriptors[route.key];
-    const options = descriptor.options;
-
-    if (options.tabBarButtonComponent) {
-      return options.tabBarButtonComponent;
-    }
-
-    return null;
-  };
-
   _renderTabBar = () => {
     const {
       tabBarComponent: TabBarComponent = BottomTabBar,
@@ -62,6 +51,7 @@ class TabNavigationView extends React.PureComponent<Props, State> {
       screenProps,
       getLabelText,
       getAccessibilityLabel,
+      getButtonComponent,
       getTestID,
       renderIcon,
       onTabPress,
@@ -87,7 +77,7 @@ class TabNavigationView extends React.PureComponent<Props, State> {
         onTabPress={onTabPress}
         onTabLongPress={onTabLongPress}
         getLabelText={getLabelText}
-        getButtonComponent={this._getButtonComponent}
+        getButtonComponent={getButtonComponent}
         getAccessibilityLabel={getAccessibilityLabel}
         getTestID={getTestID}
         renderIcon={renderIcon}
@@ -135,6 +125,8 @@ class TabNavigationView extends React.PureComponent<Props, State> {
     );
   }
 }
+
+polyfill(TabNavigationView);
 
 const styles = StyleSheet.create({
   container: {

@@ -20,7 +20,6 @@ export default class ResourceSavingScene extends React.Component<Props> {
       const { isVisible, ...rest } = this.props;
       return <Screen active={isVisible ? 1 : 0} {...rest} />;
     }
-
     const { isVisible, children, style, ...rest } = this.props;
 
     return (
