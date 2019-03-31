@@ -75,18 +75,6 @@ class TouchableWithoutFeedbackWrapper extends React.Component<*> {
 
 class TabBarBottom extends React.Component<Props> {
   
-  constructor(props) {
-    super(props)
-    this.state = {
-        newRoutes: props.navigation.state,
-    }
-    if (!props.isFingerPrintSupported) {
-        const routes = this.state.newRoutes.routes.filter(obj => obj.key !== 'finger')
-        this.state.newRoutes.routes = routes
-        this.setState({ newRoutes: this.state.newRoutes })
-    }
-  }
-
     static defaultProps = {
     activeTintColor: '#007AFF',
     activeBackgroundColor: 'transparent',
@@ -216,6 +204,7 @@ class TabBarBottom extends React.Component<Props> {
       safeAreaInset,
       style,
       tabStyle,
+      isFingerPrintSupported
     } = this.props;
 
     const { routes } = navigation.state;
@@ -228,9 +217,11 @@ class TabBarBottom extends React.Component<Props> {
       style,
     ];
 
+    if (!isFingerPrintSupported && route.key === 'finger') return null
+
     return (
       <SafeAreaView style={tabBarStyle} forceInset={safeAreaInset}>
-        {this.state.newRoutes.routes.map((route, index) => {
+        {routes.map((route, index) => {
           const focused = index === navigation.state.index;
           const scene = { route, focused };
           const accessibilityLabel = this.props.getAccessibilityLabel({
